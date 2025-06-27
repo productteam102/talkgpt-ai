@@ -8,8 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import Message from "@/components/message"
 import SuggestedPrompts from "@/components/suggested-prompts"
 import ImageUpload from "@/components/image-upload"
-import DebugPanel from "@/components/debug-panel"
-import { useDebugLogger } from "@/hooks/use-debug-logger"
+import { useFirebaseAnalytics } from "@/hooks/use-firebase-analytics"
 import Image from "next/image"
 
 interface ChatMessage {
@@ -29,8 +28,10 @@ export default function ChatInterface() {
   const [showImageUpload, setShowImageUpload] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [lastFailedMessage, setLastFailedMessage] = useState<string | null>(null)
+  const [sessionStartTime] = useState<number>(Date.now())
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const { logs, addLog, clearLogs } = useDebugLogger()
+  const { trackChatMessage, trackPromptUsage, trackImageUpload, trackError, trackFeatureUsage, trackStudySession } =
+    useFirebaseAnalytics()
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -40,15 +41,32 @@ export default function ChatInterface() {
     scrollToBottom()
   }, [messages])
 
+  // Track study session when component unmounts or messages change significantly
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      if (messages.length > 0) {
+        const sessionDuration = Math.floor((Date.now() - sessionStartTime) / 1000)
+        trackStudySession(messages, sessionDuration)
+      }
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload)
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload)
+      handleBeforeUnload() // Also track when component unmounts
+    }
+  }, [messages, sessionStartTime, trackStudySession])
+
   const handleImageUpload = (imageData: string) => {
     setUploadedImage(imageData)
     setShowImageUpload(false)
-    addLog("info", "Image uploaded", { imageSize: imageData.length })
+    console.log("Image uploaded", { imageSize: imageData.length })
+    trackImageUpload()
   }
 
   const sendMessage = async (messageContent: string, isRetry = false) => {
     if (!messageContent.trim() && !uploadedImage) {
-      addLog("warning", "Attempted to send empty message")
+      console.warn("Attempted to send empty message")
       return
     }
 
@@ -64,6 +82,8 @@ export default function ChatInterface() {
 
     if (!isRetry) {
       setMessages((prev) => [...prev, userMessage])
+      // Track user message
+      trackChatMessage("user", !!uploadedImage)
     }
 
     // Add loading message
@@ -80,7 +100,7 @@ export default function ChatInterface() {
       setInput("")
     }
 
-    addLog("info", "Sending message", {
+    console.log("Sending message", {
       content: messageContent.substring(0, 100),
       hasImage: !!uploadedImage,
       isRetry: isRetry,
@@ -108,7 +128,7 @@ export default function ChatInterface() {
         throw new Error(errorData.userMessage || errorData.details || `HTTP ${response.status}`)
       }
 
-      addLog("info", "Response received, starting to read stream")
+      console.log("Response received, starting to read stream")
 
       // Read the streaming response
       const reader = response.body?.getReader()
@@ -131,7 +151,7 @@ export default function ChatInterface() {
         while (true) {
           const { done, value } = await reader.read()
           if (done) {
-            addLog("info", "Stream reading completed")
+            console.log("Stream reading completed")
             break
           }
 
@@ -145,7 +165,7 @@ export default function ChatInterface() {
 
             const data = trimmedLine.slice(6)
             if (data === "[DONE]") {
-              addLog("info", "Received [DONE] signal")
+              console.log("Received [DONE] signal")
               break
             }
 
@@ -162,7 +182,7 @@ export default function ChatInterface() {
                 )
               }
             } catch (parseError) {
-              addLog("warning", "Failed to parse chunk", {
+              console.warn("Failed to parse chunk", {
                 data: data.substring(0, 100),
                 error: parseError instanceof Error ? parseError.message : String(parseError),
               })
@@ -173,21 +193,27 @@ export default function ChatInterface() {
         reader.releaseLock()
       }
 
-      addLog("info", "Message completed", {
+      console.log("Message completed", {
         finalLength: assistantContent.length,
       })
+
+      // Track assistant message
+      trackChatMessage("assistant")
 
       // Clear uploaded image and last failed message after successful send
       setUploadedImage(null)
       setLastFailedMessage(null)
     } catch (error) {
-      addLog("error", "Error sending message", {
+      console.error("Error sending message", {
         error: error instanceof Error ? error.message : String(error),
       })
 
       const errorMessage = error instanceof Error ? error.message : "An error occurred"
       setError(errorMessage)
       setLastFailedMessage(messageContent)
+
+      // Track error
+      trackError("chat_api_error", errorMessage)
 
       // Remove the loading message and show error
       setMessages((prev) => {
@@ -218,6 +244,7 @@ export default function ChatInterface() {
       // Remove the error message
       setMessages((prev) => prev.slice(0, -1))
       sendMessage(lastFailedMessage, true)
+      trackFeatureUsage("retry_message")
     }
   }
 
@@ -228,82 +255,9 @@ export default function ChatInterface() {
 
   const handleSuggestedPrompt = (prompt: string) => {
     setInput(prompt)
-    addLog("info", "Selected suggested prompt", { prompt })
-  }
-
-  const testAPI = async () => {
-    addLog("info", "Testing API connection...")
-
-    try {
-      const testPayload = {
-        messages: [{ role: "user", content: "Hello, this is a test message. Please respond with 'Test successful!'" }],
-        data: {},
-      }
-
-      addLog("info", "Sending test request", testPayload)
-
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(testPayload),
-      })
-
-      addLog("info", "API test response received", {
-        status: response.status,
-        statusText: response.statusText,
-        contentType: response.headers.get("content-type"),
-      })
-
-      if (!response.ok) {
-        const errorText = await response.text()
-        addLog("error", "API test failed", { status: response.status, error: errorText })
-        return
-      }
-
-      // Test streaming response
-      const reader = response.body?.getReader()
-      if (!reader) {
-        addLog("error", "No response body reader available")
-        return
-      }
-
-      let chunks = 0
-      let totalData = ""
-      const decoder = new TextDecoder()
-
-      try {
-        while (true) {
-          const { done, value } = await reader.read()
-          if (done) break
-
-          chunks++
-          const chunk = decoder.decode(value, { stream: true })
-          totalData += chunk
-
-          if (chunks <= 3) {
-            addLog("info", `Received chunk ${chunks}`, {
-              chunk: chunk.substring(0, 200),
-              chunkLength: chunk.length,
-            })
-          }
-        }
-
-        addLog("info", "API test completed successfully", {
-          totalChunks: chunks,
-          totalDataLength: totalData.length,
-          sampleData: totalData.substring(0, 300),
-        })
-      } catch (streamError) {
-        addLog("error", "Error reading stream", { error: streamError })
-      }
-    } catch (error) {
-      addLog("error", "API test failed with exception", {
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-      })
-    }
+    console.log("Selected suggested prompt", { prompt })
+    trackPromptUsage(prompt)
+    trackFeatureUsage("suggested_prompt")
   }
 
   const hasMessages = messages.length > 0
@@ -325,7 +279,9 @@ export default function ChatInterface() {
             </div>
             <h2 className="text-3xl font-bold text-gray-800 mb-4">{"Yo! 🤖 Ready to crush your studies?"}</h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              {"I’m your AI buddy here to make homework suck less 😎\nAsk anything, upload your notes or math problems, and let’s make learning actually fun."}
+              {
+                "I'm your AI buddy here to make homework suck less 😎\nAsk anything, upload your notes or math problems, and let's make learning actually fun."
+              }
             </p>
           </div>
         )}
@@ -442,9 +398,6 @@ export default function ChatInterface() {
           </div>
         )}
       </div>
-
-      {/* Debug Panel */}
-      <DebugPanel logs={logs} onClear={clearLogs} onTestAPI={testAPI} />
     </>
   )
 }

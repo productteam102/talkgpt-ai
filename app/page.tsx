@@ -2,15 +2,6 @@ import Link from "next/link"
 import ChatInterface from "@/components/chat-interface"
 import Image from "next/image"
 
-const renderMessage = (content: string) => {
-  // Simple markdown-like rendering without KaTeX
-  return content
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(/`(.*?)`/g, '<code class="bg-gray-100 px-1 rounded">$1</code>')
-    .replace(/\n/g, "<br>")
-}
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
@@ -41,7 +32,7 @@ export default function Home() {
       {/* Main Content - Centered Layout */}
       <main className="flex-1 flex items-center justify-center min-h-[calc(100vh-120px)] px-4 py-6">
         <div className="w-full max-w-4xl">
-          <ChatInterface renderMessage={renderMessage} />
+          <ChatInterface />
         </div>
       </main>
     </div>
