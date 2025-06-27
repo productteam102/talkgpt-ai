@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 
 interface SuggestedPromptsProps {
   onPromptSelect: (prompt: string) => void
+  usedPrompts: Set<string>
 }
 
 const prompts = [
@@ -15,7 +16,7 @@ const prompts = [
   {
     text: "Math lookin' scary?",
     emoji: "🧮",
-    description: "I gotchu. let's break it down",
+    description: "I gotchu – let's break it down",
   },
   {
     text: "Stuck on a question?",
@@ -30,7 +31,7 @@ const prompts = [
   {
     text: "Quiz me like you mean it",
     emoji: "❓",
-    description: "Let’s see what you really know...",
+    description: "Let's see what you really know...",
   },
   {
     text: "Make a study plan",
@@ -39,10 +40,10 @@ const prompts = [
   },
 ]
 
-export default function SuggestedPrompts({ onPromptSelect }: SuggestedPromptsProps) {
+export default function SuggestedPrompts({ onPromptSelect, usedPrompts }: SuggestedPromptsProps) {
   return (
     <div className="space-y-4 text-left">
-      <h3 className="text-lg font-semibold text-gray-700 text-left">✨ Study Prompt Boxes </h3>
+      <h3 className="text-lg font-semibold text-gray-700 text-left">✨ Study Prompt Boxes</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {prompts.map((prompt, index) => (
           <Button

@@ -9,6 +9,46 @@ function debugLog(level: "info" | "error" | "warning", message: string, data?: a
   console.log(`[${timestamp}] [${level.toUpperCase()}] ${message}`, data || "")
 }
 
+// Custom OpenRouter provider for AI SDK
+function createOpenRouterProvider() {
+  return {
+    chat: async (options: any) => {
+      debugLog("info", "OpenRouter provider called", {
+        model: options.model,
+        messagesCount: options.messages?.length,
+      })
+
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://talkgpt-study.vercel.app",
+          "X-Title": "TalkGPT Study Assistant",
+        },
+        body: JSON.stringify({
+          model: "qwen/qwen2.5-vl-72b-instruct:free",
+          messages: options.messages,
+          stream: true,
+          temperature: 0.7,
+          max_tokens: 2000,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        debugLog("error", "OpenRouter API error", {
+          status: response.status,
+          error: errorText,
+        })
+        throw new Error(`OpenRouter API error: ${response.status} - ${errorText}`)
+      }
+
+      return response
+    },
+  }
+}
+
 export async function POST(req: NextRequest) {
   debugLog("info", "=== Chat API Request Started ===")
 
@@ -20,7 +60,6 @@ export async function POST(req: NextRequest) {
         JSON.stringify({
           error: "API key not configured",
           details: "OPENROUTER_API_KEY environment variable is missing",
-          userMessage: "Service configuration error. Please contact support.",
         }),
         {
           status: 500,
@@ -46,7 +85,6 @@ export async function POST(req: NextRequest) {
         JSON.stringify({
           error: "Invalid request body",
           details: "Failed to parse JSON",
-          userMessage: "Invalid request format. Please try again.",
         }),
         {
           status: 400,
@@ -64,7 +102,6 @@ export async function POST(req: NextRequest) {
         JSON.stringify({
           error: "Invalid messages",
           details: "Messages must be a non-empty array",
-          userMessage: "No messages to process. Please try again.",
         }),
         {
           status: 400,
@@ -106,12 +143,9 @@ export async function POST(req: NextRequest) {
 
     debugLog("info", "Messages formatted for API", { formattedCount: formattedMessages.length })
 
-    // Use only the specified model
-    const model = "qwen/qwen2.5-vl-72b-instruct:free"
-
     // Prepare API request payload
     const apiPayload = {
-      model: model,
+      model: "qwen/qwen2.5-vl-72b-instruct:free",
       messages: [
         {
           role: "system",
@@ -140,8 +174,11 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
       max_tokens: 2000,
     }
 
-    debugLog("info", `Making request with model: ${model}`, {
+    debugLog("info", "Making request to OpenRouter API", {
+      url: "https://openrouter.ai/api/v1/chat/completions",
+      model: apiPayload.model,
       messageCount: apiPayload.messages.length,
+      stream: apiPayload.stream,
     })
 
     // Make request to OpenRouter API
@@ -159,7 +196,7 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
     debugLog("info", "OpenRouter API response received", {
       status: response.status,
       statusText: response.statusText,
-      contentType: response.headers.get("content-type"),
+      headers: Object.fromEntries(response.headers.entries()),
     })
 
     if (!response.ok) {
@@ -170,23 +207,11 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
         errorBody: errorText,
       })
 
-      // Determine user-friendly error message
-      let userMessage = "I'm having trouble connecting right now. Please try again in a few minutes."
-
-      if (response.status === 429) {
-        userMessage = "I'm getting a lot of requests right now! Please wait a moment and try again. 😊"
-      } else if (response.status === 404) {
-        userMessage = "The AI model is temporarily unavailable. Please try again later."
-      } else if (errorText.includes("Rate limit exceeded")) {
-        userMessage =
-          "Daily usage limit reached. The service will reset tomorrow, or you can upgrade for unlimited access."
-      }
-
       return new Response(
         JSON.stringify({
           error: `OpenRouter API error: ${response.status}`,
           details: errorText,
-          userMessage: userMessage,
+          status: response.status,
         }),
         {
           status: response.status,
@@ -197,7 +222,7 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
 
     debugLog("info", "Starting to process streaming response")
 
-    // Return the streaming response directly
+    // Create a readable stream that properly formats the OpenRouter response for AI SDK
     const stream = new ReadableStream({
       async start(controller) {
         const reader = response.body?.getReader()
@@ -220,15 +245,18 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
 
             buffer += decoder.decode(value, { stream: true })
             const lines = buffer.split("\n")
-            buffer = lines.pop() || ""
+            buffer = lines.pop() || "" // Keep incomplete line in buffer
 
             for (const line of lines) {
               const trimmedLine = line.trim()
               if (!trimmedLine || !trimmedLine.startsWith("data: ")) continue
 
-              const data = trimmedLine.slice(6)
+              const data = trimmedLine.slice(6) // Remove "data: " prefix
               if (data === "[DONE]") {
                 debugLog("info", "Received [DONE] signal")
+                // Send final chunk to close the stream properly
+                const finalChunk = `data: {"choices":[{"delta":{},"finish_reason":"stop"}]}\n\n`
+                controller.enqueue(new TextEncoder().encode(finalChunk))
                 controller.close()
                 return
               }
@@ -238,9 +266,9 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
                 const content = parsed.choices?.[0]?.delta?.content
 
                 if (content) {
-                  // Send the content directly as received from OpenRouter
-                  const chunk = `data: ${JSON.stringify(parsed)}\n\n`
-                  controller.enqueue(new TextEncoder().encode(chunk))
+                  // Format the response exactly as AI SDK expects
+                  const formattedChunk = `data: {"choices":[{"delta":{"content":${JSON.stringify(content)}}}]}\n\n`
+                  controller.enqueue(new TextEncoder().encode(formattedChunk))
                 }
               } catch (parseError) {
                 debugLog("warning", "Failed to parse streaming chunk", {
@@ -284,7 +312,6 @@ Remember: You're here to help students learn and succeed! 🎓✨`,
       JSON.stringify({
         error: "Internal server error",
         details: error instanceof Error ? error.message : "Unknown error occurred",
-        userMessage: "Something went wrong on our end. Please try again.",
       }),
       {
         status: 500,

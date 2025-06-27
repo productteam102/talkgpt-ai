@@ -1,19 +1,9 @@
 "use client"
 
-import { Loader2, AlertCircle } from "lucide-react"
-import Image from "next/image"
-
-interface ChatMessage {
-  id: string
-  role: "user" | "assistant"
-  content: string
-  image?: string
-  isLoading?: boolean
-  isError?: boolean
-}
+import type { Message as MessageType } from "ai"
 
 interface MessageProps {
-  message: ChatMessage
+  message: MessageType & { image?: string } // Add image property to message type
 }
 
 // Simple markdown renderer without external dependencies
@@ -37,48 +27,7 @@ const renderContent = (content: string) => {
 export default function Message({ message }: MessageProps) {
   const isUser = message.role === "user"
 
-  // Handle loading state
-  if (message.isLoading) {
-    return (
-      <div className="flex justify-start">
-        <div className="flex items-start space-x-3">
-          {/* AI Avatar */}
-          <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm border border-gray-100">
-            <Image
-              src="/images/talkgpt-logo.png"
-              alt="TalkGPT"
-              width={32}
-              height={32}
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <div className="bg-white rounded-2xl px-4 py-3 shadow-sm border border-gray-100 flex items-center space-x-2">
-            <Loader2 className="w-4 h-4 animate-spin text-purple-500" />
-            <span className="text-gray-500">Thinking...</span>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Handle error state
-  if (message.isError) {
-    return (
-      <div className="flex justify-start">
-        <div className="flex items-start space-x-3">
-          {/* AI Avatar */}
-          <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-red-50 border border-red-200">
-            <AlertCircle className="w-4 h-4 text-red-500" />
-          </div>
-          <div className="bg-red-50 border border-red-200 rounded-2xl px-4 py-3 max-w-[80%]">
-            <p className="text-red-700">{message.content}</p>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Debug: Check if content is empty for non-loading messages
+  // Debug: Check if content is empty
   if (!message.content && !message.image) {
     console.warn("[Message Component] Empty message content:", message)
     return (
@@ -92,64 +41,44 @@ export default function Message({ message }: MessageProps) {
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex items-start space-x-3 max-w-[80%] ${isUser ? "flex-row-reverse space-x-reverse" : ""}`}>
-        {/* Avatar */}
-        <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden bg-white shadow-sm border border-gray-100">
-          {isUser ? (
-            <span className="text-sm font-medium text-gray-600">👤</span>
-          ) : (
-            <Image
-              src="/images/talkgpt-logo.png"
-              alt="TalkGPT"
-              width={32}
-              height={32}
-              className="w-full h-full object-contain"
-            />
+      <div className={`max-w-[80%] ${isUser ? "order-2" : "order-1"}`}>
+        <div
+          className={`rounded-2xl px-4 py-3 shadow-sm ${
+            isUser ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "bg-white border border-gray-100"
+          }`}
+        >
+          {/* Display image if present (for user messages) */}
+          {message.image && isUser && (
+            <div className="mb-3">
+              <img
+                src={message.image || "/placeholder.svg"}
+                alt="Uploaded content"
+                className="max-w-full h-auto rounded-lg max-h-64 object-contain border border-white/20"
+              />
+            </div>
           )}
-        </div>
 
-        {/* Message Content */}
-        <div className="flex flex-col">
-          <div
-            className={`rounded-2xl px-4 py-3 shadow-sm ${
-              isUser ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white" : "bg-white border border-gray-100"
-            }`}
-          >
-            {/* Display image if present (for user messages) */}
-            {message.image && isUser && (
-              <div className="mb-3">
-                <img
-                  src={message.image || "/placeholder.svg"}
-                  alt="Uploaded by user"
-                  className="max-w-full h-auto rounded-lg max-h-48 object-contain border border-white/20"
+          {/* Display text content */}
+          {message.content && (
+            <>
+              {isUser ? (
+                <p className="whitespace-pre-wrap">{message.content}</p>
+              ) : (
+                <div
+                  className="prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{
+                    __html: `<div class="mb-2">${renderContent(message.content)}</div>`,
+                  }}
                 />
-              </div>
-            )}
+              )}
+            </>
+          )}
 
-            {/* Display text content */}
-            {message.content && (
-              <>
-                {isUser ? (
-                  <p className="whitespace-pre-wrap">{message.content}</p>
-                ) : (
-                  <div
-                    className="prose prose-sm max-w-none"
-                    dangerouslySetInnerHTML={{
-                      __html: `<div class="mb-2">${renderContent(message.content)}</div>`,
-                    }}
-                  />
-                )}
-              </>
-            )}
-          </div>
-
-          {/* Message Footer */}
-          <div className={`flex items-center mt-1 ${isUser ? "justify-end" : "justify-start"}`}>
-            <span className="text-xs text-gray-400">
-              {isUser ? "You" : "TalkGPT"}
-              {message.image && isUser && " • 📸 Image"}
-            </span>
-          </div>
+          {/* Show placeholder text if only image and no text */}
+          {message.image && !message.content && isUser && <p className="text-white/90 italic">📸 Image uploaded</p>}
+        </div>
+        <div className={`flex items-center mt-1 ${isUser ? "justify-end" : "justify-start"}`}>
+          <span className="text-xs text-gray-400">{isUser ? "👤 You" : "🤖 TalkGPT"}</span>
         </div>
       </div>
     </div>
