@@ -45,6 +45,13 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" type="image/png" href="/favicon.png" />
+
+        {/* ✅ Google AdSense */}
+  <Script
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7695206971263795"
+    crossOrigin="anonymous"
+  />
         
         {/* ✅ Google Ads Tag - gtag.js */}
         <Script
