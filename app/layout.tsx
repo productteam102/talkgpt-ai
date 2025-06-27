@@ -6,11 +6,18 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "TalkGPT - AI Study Companion",
+  title: "TalkGPT – Your AI Study Buddy for Homework Help, Math, Flashcards & More",
   description:
     "Your friendly AI study assistant for Gen Z students. Get help with homework, create flashcards, and ace your studies!",
-    generator: 'v0.dev'
-}
+  images: [
+      {
+        url: "/images/logo.png", // ✅ relative path from public/
+        width: 800,
+        height: 600,
+        alt: "TalkGPT Logo",
+      },
+    ],
+  },
 
 export default function RootLayout({
   children,
