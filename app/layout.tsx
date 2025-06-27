@@ -6,18 +6,32 @@ import "./globals.css"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "TalkGPT – Your AI Study Buddy for Homework Help, Math, Flashcards & More",
+  title: "TalkGPT – AI Homework Help & Study Assistant",
   description:
-    "Your friendly AI study assistant for Gen Z students. Get help with homework, create flashcards, and ace your studies!",
-  images: [
+    "Get fast, accurate AI homework help and study support with TalkGPT. Solve math problems, summarize topics, and create flashcards in seconds.",
+  keywords: [
+    "homework help",
+    "AI study assistant",
+    "study tools",
+    "math solver",
+    "flashcards",
+    "student learning",
+    "TalkGPT"
+  ],
+  openGraph: {
+    title: "TalkGPT – AI Homework Help & Study Assistant",
+    description:
+      "Get fast, accurate AI homework help and study support with TalkGPT. Solve math problems, summarize topics, and create flashcards in seconds.",
+    images: [
       {
-        url: "/images/logo.png", // ✅ relative path from public/
+        url: "/images/logo.png",
         width: 800,
         height: 600,
         alt: "TalkGPT Logo",
       },
     ],
   },
+}
 
 export default function RootLayout({
   children,
