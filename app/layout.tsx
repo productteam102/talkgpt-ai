@@ -62,6 +62,22 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         {children}
+        
+        {/* ✅ Native Banner Ad Container */}
+        <div id="container-c1836fc2d064a907c625aafd581a89ea" />
+
+        {/* ✅ Native Banner Ad Script */}
+        <Script id="native-banner" strategy="afterInteractive">
+          {`
+            (function() {
+              var s = document.createElement('script');
+              s.setAttribute('data-cfasync', 'false');
+              s.src = '//headlongrelic.com/c1836fc2d064a907c625aafd581a89ea/invoke.js';
+              s.async = true;
+              document.body.appendChild(s);
+            })();
+          `}
+        </Script>
       </body>
     </html>
   )
