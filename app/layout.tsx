@@ -80,12 +80,12 @@ export default function RootLayout({
         </Script>
 
         {/* ✅ Social Bar Ad Script */}
-        <Script
-        id="social-bar-ad"
-        src="//headlongrelic.com/your-socialbar-script.js"
-        strategy="afterInteractive"
+  <Script
+    id="social-bar-ad"
+    src="//headlongrelic.com/fa/0e/bd/fa0ebdfbcff288b40e1fe21c687453bf.js"
+    strategy="afterInteractive"
   />
-      </body>
+</body>
     </html>
   )
 }
