@@ -1,4 +1,5 @@
 import type React from "react"
+import Script from "next/script"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -44,6 +45,20 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" type="image/png" href="/favicon.png" />
+        
+        {/* ✅ Google Ads Tag - gtag.js */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17079833619"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17079833619');
+          `}
+        </Script>
       </head>
       <body className={inter.className}>
         {children}
