@@ -2,7 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import ChatInterface from "@/components/chat-interface"
 import { Button } from "@/components/ui/button"
-import { HomeIcon, UserIcon } from "lucide-react"
+import { HomeIcon, UserIcon, Newspaper } from "lucide-react"
 
 export default function HomePage() {
   return (
@@ -29,6 +29,12 @@ export default function HomePage() {
                 <Link href="/" className="flex items-center space-x-2">
                   
                   
+                </Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="text-gray-600 hover:text-purple-600">
+                <Link href="https://news.talkgpt-ai.fun/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2">
+                  <Newspaper className="w-4 h-4" />
+                  <span className="hidden sm:inline">News</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="sm" asChild className="text-gray-600 hover:text-purple-600">

@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Home, MessageSquare, BookOpen, Trophy, Calendar, Settings } from "lucide-react"
+import { Home, MessageSquare, BookOpen, Trophy, Calendar, Settings, Newspaper } from "lucide-react"
 
 export default function ProfilePage() {
   return (
@@ -30,6 +30,12 @@ export default function ProfilePage() {
                 <Link href="/" className="flex items-center space-x-2">
                   <Home className="w-4 h-4" />
                   <span className="hidden sm:inline">Home</span>
+                </Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild className="text-gray-600 hover:text-purple-600">
+                <Link href="https://news.talkgpt-ai.fun/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2">
+                  <Newspaper className="w-4 h-4" />
+                  <span className="hidden sm:inline">News</span>
                 </Link>
               </Button>
               <Button variant="outline" size="sm" className="text-purple-600 border-purple-200 bg-transparent">
