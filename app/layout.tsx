@@ -24,6 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" />
+        {/* Monetag meta*/}
+        <meta name="monetag" content="ec1384ae1e3c8ca4196ec1226306ecac" />
       </head>
       <body>
         {children}
