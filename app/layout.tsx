@@ -10,8 +10,8 @@ export const metadata: Metadata = {
     description: "Get fast, accurate AI homework help and study support with TalkGPT. Solve math problems, summarize topics, and create flashcards in seconds",
     images: [
       {
-        url: "/logo.png",   // Lấy ảnh từ thư mục public
-        width: 800,         // Tùy chỉnh kích thước ảnh (khuyến nghị >= 600x600)
+        url: "/logo.png",
+        width: 800,
         height: 800,
         alt: "TalkGPT Logo",
       },
@@ -22,6 +22,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body>
         {children}
       </body>
