@@ -90,9 +90,6 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#a855f7" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        {/* ✅ Monetag Meta */}
-        <meta name="monetag" content="ec1384ae1e3c8ca4196ec1226306ecac" />
-
         {/* ✅ Google AdSense */}
         <Script
           async
