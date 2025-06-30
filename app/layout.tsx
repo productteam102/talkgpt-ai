@@ -90,6 +90,9 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#a855f7" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+         {/* ✅ PushSDK Meta */}
+  <meta name="pushsdk" content="9d0963d4a8c8deb74354a6fc838451bf" />
+
         {/* ✅ Google AdSense */}
         <Script
           async
