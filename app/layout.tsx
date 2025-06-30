@@ -23,9 +23,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <meta property="og:title" content="TalkGPT – AI Homework Help & Study Assistant" />
-        <meta property="og:description" content="Get fast, accurate AI homework help …" />
-        <meta property="og:image" content="https://talkgpt-ai.fun/logo.png" />
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body>
