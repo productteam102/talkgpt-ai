@@ -25,7 +25,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="icon" href="/favicon.ico" />
         <meta name="monetag" content="ec1384ae1e3c8ca4196ec1226306ecac" />
-        {/* Monetag script zone 154787 */}
+        <meta name="pushsdk" content="9d0963d4a8c8deb74354a6fc838451bf" />
+        {/* Monetag */}
         <script
           src="https://fpyf8.com/88/tag.min.js"
           data-zone="154787"
