@@ -29,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {children}
+
         {/* HilltopAds Popunder */}
         <script
           dangerouslySetInnerHTML={{
@@ -39,6 +40,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     l = d.scripts[d.scripts.length - 1];
                 s.settings = kyizrc || {};
                 s.src = "//webbed-leadership.com/c/DV9.6fb-2L5Yl/SVW/Qg9JNij/Q/3fNBDpgz5/MuSD0M2bNmD-cX0MOoD/kbyj";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+              })({})
+            `,
+          }}
+        />
+
+        {/* In-Page Push Ads */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(ephu){
+                var d = document,
+                    s = d.createElement('script'),
+                    l = d.scripts[d.scripts.length - 1];
+                s.settings = ephu || {};
+                s.src = "//flippantpoetry.com/bfX.VusOd/GmlU0PYSWRcn/OeDmi9/uEZYUtlNkHPNTsYz0dNnzOQs5ONVTeM-tFN/joQC3XNrD/k/1RNiAw";
                 s.async = true;
                 s.referrerPolicy = 'no-referrer-when-downgrade';
                 l.parentNode.insertBefore(s, l);
