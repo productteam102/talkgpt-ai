@@ -29,7 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="referrer" content="no-referrer-when-downgrade" />
       </head>
       <body>
-        <AdRedirect />
         {children}
       </body>
     </html>
