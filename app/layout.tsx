@@ -1,9 +1,7 @@
 // app/layout.tsx
-'use client'; // cần cho useEffect hoạt động ở layout
-
 import './globals.css';
 import type { Metadata } from 'next';
-import { useEffect } from 'react';
+import AdRedirect from '../components/AdRedirect';
 
 export const metadata: Metadata = {
   title: "TalkGPT – AI Homework Help & Study Assistant",
@@ -23,17 +21,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.open(
-        'https://webbed-leadership.com/bp3.Vs0wPt3/pSvgbMmbVoJyZPDp0k2/NCDaci0/0YDSkRxrLtTiY_0XNAzdQG4/OsTZIM',
-        '_blank'
-      );
-    }, 5000); // Mở sau 5 giây
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <html lang="en">
       <head>
@@ -42,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="referrer" content="no-referrer-when-downgrade" />
       </head>
       <body>
+        <AdRedirect />
         {children}
       </body>
     </html>
