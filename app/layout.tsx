@@ -52,12 +52,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              (function(wor){
+            (function(ooqhje){
 var d = document,
     s = d.createElement('script'),
     l = d.scripts[d.scripts.length - 1];
-s.settings = wor || {};
-s.src = "\/\/flippantpoetry.com\/b\/XGVNs.dKGClp0\/YMW\/cx\/Qedm\/9DuoZ\/Uslxk\/P\/TmY\/0\/N\/z\/UcwJNijZEUtPNsjdQw3PNYT-A\/2gMEgQ";
+s.settings = ooqhje || {};
+s.src = "\/\/flippantpoetry.com\/bXXNV.sGdGGPlr0jY\/Wrcp\/Ceamv9KuiZJUflOk\/PFToYM0\/NzzMUDwoNqzvENtRNDj_QA3bNFTBAk3FM_gn";
 s.async = true;
 s.referrerPolicy = 'no-referrer-when-downgrade';
 l.parentNode.insertBefore(s, l);
