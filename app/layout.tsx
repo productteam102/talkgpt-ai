@@ -26,10 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="icon" href="/favicon.ico" />
         <meta name="0a0b01ea9e34a49669e2490559e4d39b1d507db1" content="0a0b01ea9e34a49669e2490559e4d39b1d507db1" />
         <meta name="referrer" content="no-referrer-when-downgrade" />
-        
-        {/* Monetag */}
-        <script src="https://fpyf8.com/88/tag.min.js" data-zone="155294" async data-cfasync="false"></script>
-
 
         {/* Google Tag (gtag.js) */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17079833619"></script>
