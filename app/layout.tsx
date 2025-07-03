@@ -1,7 +1,6 @@
 // app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
-import AdRedirect from '../components/AdRedirect';
 
 export const metadata: Metadata = {
   title: "TalkGPT – AI Homework Help & Study Assistant",
@@ -30,6 +29,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {children}
+        {/* HilltopAds Popunder */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(kyizrc){
+                var d = document,
+                    s = d.createElement('script'),
+                    l = d.scripts[d.scripts.length - 1];
+                s.settings = kyizrc || {};
+                s.src = "//webbed-leadership.com/c/DV9.6fb-2L5Yl/SVW/Qg9JNij/Q/3fNBDpgz5/MuSD0M2bNmD-cX0MOoD/kbyj";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+              })({})
+            `,
+          }}
+        />
       </body>
     </html>
   );
