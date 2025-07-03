@@ -48,19 +48,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
-        {/* Banner 300x100 Ads */}
+        {/* Banner 300x250 Ads */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              (function(rdbe){
-              var d = document,
-                  s = d.createElement('script'),
-                  l = d.scripts[d.scripts.length - 1];
-              s.settings = rdbe || {};
-              s.src = "\/\/flippantpoetry.com\/brX.VVs\/dlG\/ln0_YTW_cT\/JeamF9\/uyZdU\/lFkAPqT\/Yo0\/N\/zQUiwDN\/DGITtNN\/jyQb3HN-TWAl0\/MbwK";
-              s.async = true;
-              s.referrerPolicy = 'no-referrer-when-downgrade';
-              l.parentNode.insertBefore(s, l);
+              (function(wor){
+var d = document,
+    s = d.createElement('script'),
+    l = d.scripts[d.scripts.length - 1];
+s.settings = wor || {};
+s.src = "\/\/flippantpoetry.com\/b\/XGVNs.dKGClp0\/YMW\/cx\/Qedm\/9DuoZ\/Uslxk\/P\/TmY\/0\/N\/z\/UcwJNijZEUtPNsjdQw3PNYT-A\/2gMEgQ";
+s.async = true;
+s.referrerPolicy = 'no-referrer-when-downgrade';
+l.parentNode.insertBefore(s, l);
               })({})
             `,
           }}
