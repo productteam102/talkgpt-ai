@@ -61,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
 
-        {/* Webpushr Push Notification */}
+        {/* Webpush Push Notification */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
