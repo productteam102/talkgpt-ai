@@ -42,25 +42,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         {children}
-        
+
         {/* HilltopAds In-Push Page */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function(cpdd){
-              var d = document,
-                s = d.createElement('script'),
-                l = d.scripts[d.scripts.length - 1];
-              s.settings = cpdd || {};
-              s.src = "\/\/oilycoat.com\/b.XzVksJdfG_lO0IYJWYcQ\/pePmL9iukZMUcl-kHPdTgYQ0BN\/zgQK5\/NPTOMHt\/NIjfQ_3INJDfk\/1\/NxAb";
-              s.async = true;
-              s.referrerPolicy = 'no-referrer-when-downgrade';
-              l.parentNode.insertBefore(s, l);
-              })({})
+                var d = document,
+                    s = d.createElement('script'),
+                    l = d.scripts[d.scripts.length - 1];
+                s.settings = cpdd || {};
+                s.src = "//oilycoat.com/b.XzVksJdfG_lO0IYJWYcQ/pePmL9iukZMUcl-kHPdTgYQ0BN/zgQK5/NPTOMHt/NIjfQ_3INJDfk/1/NxAb";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+              })({});
             `,
           }}
         />
-        
 
         {/* HilltopAds Popunder */}
         <script
@@ -75,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 s.async = true;
                 s.referrerPolicy = 'no-referrer-when-downgrade';
                 l.parentNode.insertBefore(s, l);
-              })({})
+              })({});
             `,
           }}
         />
@@ -84,20 +83,40 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script
           dangerouslySetInnerHTML={{
             __html: `
-            (function(ooqhje){
-            var d = document,
-              s = d.createElement('script'),
-              l = d.scripts[d.scripts.length - 1];
-            s.settings = ooqhje || {};
-            s.src = "\/\/flippantpoetry.com\/bXXNV.sGdGGPlr0jY\/Wrcp\/Ceamv9KuiZJUflOk\/PFToYM0\/NzzMUDwoNqzvENtRNDj_QA3bNFTBAk3FM_gn";
-            s.async = true;
-            s.referrerPolicy = 'no-referrer-when-downgrade';
-            l.parentNode.insertBefore(s, l);
-              })({})
+              (function(ooqhje){
+                var d = document,
+                    s = d.createElement('script'),
+                    l = d.scripts[d.scripts.length - 1];
+                s.settings = ooqhje || {};
+                s.src = "//flippantpoetry.com/bXXNV.sGdGGPlr0jY/Wrcp/Ceamv9KuiZJUflOk/PFToYM0/NzzMUDwoNqzvENtRNDj_QA3bNFTBAk3FM_gn";
+                s.async = true;
+                s.referrerPolicy = 'no-referrer-when-downgrade';
+                l.parentNode.insertBefore(s, l);
+              })({});
             `,
           }}
         />
-        <!-- start webpushr code --> <script>(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));webpushr('setup',{'key':'BFpmyk2QdlStzbFQxNaPo1zMgg6pUhhRGUhRxOiri3TM7dEKBuhrqVyJEqFhRgIQ_GfH7WS0dfyknaQh_6kGilM' });</script><!-- end webpushr code -->
+
+        {/* Webpushr Push Notification */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,id){
+                if(typeof(w.webpushr)!=='undefined') return;
+                w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};
+                var js, fjs = d.getElementsByTagName(s)[0];
+                js = d.createElement(s);
+                js.id = id;
+                js.async = 1;
+                js.src = "https://cdn.webpushr.com/app.min.js";
+                fjs.parentNode.appendChild(js);
+              })(window,document, 'script', 'webpushr-jssdk');
+              webpushr('setup',{
+                key:'BFpmyk2QdlStzbFQxNaPo1zMgg6pUhhRGUhRxOiri3TM7dEKBuhrqVyJEqFhRgIQ_GfH7WS0dfyknaQh_6kGilM'
+              });
+            `,
+          }}
+        />
       </body>
     </html>
   );
