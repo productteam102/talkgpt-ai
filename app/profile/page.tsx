@@ -1,57 +1,31 @@
-import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { SidebarLayout } from "@/components/sidebar-nav"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Home, MessageSquare, BookOpen, Trophy, Calendar, Settings, Newspaper } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { MessageSquare, BookOpen, Trophy, Calendar, Settings } from "lucide-react"
 
 export default function ProfilePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+    <SidebarLayout>
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-purple-100 shadow-sm">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity">
-              <div className="relative w-12 h-12">
-                <Image src="/logo.png" alt="TalkGPT Logo" width={48} height={48} className="rounded-xl" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                  TalkGPT
-                </h1>
-                <p className="text-sm text-gray-500">AI Study Companion</p>
-              </div>
-            </Link>
-
-            {/* Navigation Links */}
-            <div className="flex items-center space-x-2">
-              <Button variant="ghost" size="sm" asChild className="text-gray-600 hover:text-purple-600">
-                <Link href="/" className="flex items-center space-x-2">
-                  <Home className="w-4 h-4" />
-                  <span className="hidden sm:inline">Home</span>
-                </Link>
-              </Button>
-              <Button variant="ghost" size="sm" asChild className="text-gray-600 hover:text-purple-600">
-                <Link href="https://news.talkgpt-ai.fun/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2">
-                  <Newspaper className="w-4 h-4" />
-                  <span className="hidden sm:inline">News</span>
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" className="text-purple-600 border-purple-200 bg-transparent">
-                <span className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-purple-500 rounded-full"></span>
-                  <span className="hidden sm:inline">Profile</span>
-                </span>
-              </Button>
+        <div className="flex items-center justify-between px-4 py-4">
+          <div className="flex items-center space-x-3">
+            <SidebarTrigger className="text-purple-600 hover:text-purple-700" />
+            <div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Study Profile
+              </h1>
+              <p className="text-sm text-gray-500">Track your learning journey</p>
             </div>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
-        <div className="space-y-8">
+      <div className="flex-1 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-6">
+        <div className="max-w-4xl mx-auto space-y-8">
           {/* Profile Header */}
           <div className="text-center">
             <div className="w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center">
@@ -202,10 +176,10 @@ export default function ProfilePage() {
               asChild
               className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
             >
-              <Link href="/">
+              <a href="/">
                 <MessageSquare className="w-4 h-4 mr-2" />
                 Start New Chat
-              </Link>
+              </a>
             </Button>
             <Button variant="outline" className="border-purple-200 text-purple-700 hover:bg-purple-50 bg-transparent">
               <Settings className="w-4 h-4 mr-2" />
@@ -213,7 +187,7 @@ export default function ProfilePage() {
             </Button>
           </div>
         </div>
-      </main>
-    </div>
+      </div>
+    </SidebarLayout>
   )
 }
