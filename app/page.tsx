@@ -3,12 +3,6 @@ import { SidebarNav } from "@/components/sidebar-nav"
 
 export default function HomePage() {
   return (
-
-      {/* Main Content */}
-      <div className="lg:pl-80">
-        {/* Mobile Header */}
-        <header className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-purple-100 shadow-sm">
-          <div className="flex items-center justify-between px-4 py-4">
             <SidebarNav />
             <div className="flex items-center space-x-3">
               <div className="relative w-8 h-8">
