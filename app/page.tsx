@@ -12,9 +12,8 @@ export default function HomePage() {
             <SidebarTrigger className="text-purple-600 hover:text-purple-700" />
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                AI Study Assistant
+                TalkGPT AI
               </h1>
-              <p className="text-sm text-gray-500">Ready to help with your homework</p>
             </div>
           </div>
         </div>
