@@ -13,6 +13,22 @@ export default function ProfilePage() {
 
       {/* Main Content */}
       <div className="lg:pl-80">
+        {/* Mobile Header */}
+        <header className="lg:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-purple-100 shadow-sm">
+          <div className="flex items-center justify-between px-4 py-4">
+            <SidebarNav />
+            <div className="flex items-center space-x-3">
+              <div className="relative w-8 h-8">
+                <img src="/logo.png" alt="TalkGPT Logo" className="w-full h-full rounded-lg" />
+              </div>
+              <h1 className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                Profile
+              </h1>
+            </div>
+            <div className="w-10" /> {/* Spacer for balance */}
+          </div>
+        </header>
+
         {/* Profile Content */}
         <main className="max-w-4xl mx-auto px-4 py-8">
           <div className="space-y-8">
