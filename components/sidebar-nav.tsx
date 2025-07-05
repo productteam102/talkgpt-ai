@@ -108,7 +108,6 @@ export function AppSidebar() {
 
       <SidebarFooter className="border-t border-purple-100 p-4">
         <div className="flex items-center space-x-2 text-xs text-gray-500">
-          <HelpCircle className="w-4 h-4" />
         </div>
       </SidebarFooter>
     </Sidebar>
