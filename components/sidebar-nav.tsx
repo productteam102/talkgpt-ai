@@ -11,11 +11,7 @@ import {
   User, 
   Newspaper, 
   Menu, 
-  MessageSquare, 
-  BookOpen,
-  Trophy,
-  Settings,
-  X
+  Settings
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -38,24 +34,6 @@ const navigationItems = [
     icon: Newspaper,
     description: "Latest updates",
     external: true
-  }
-]
-
-const quickActions = [
-  {
-    title: "Study Session",
-    icon: BookOpen,
-    description: "Start focused learning"
-  },
-  {
-    title: "Quiz Mode",
-    icon: Trophy,
-    description: "Test your knowledge"
-  },
-  {
-    title: "Chat History",
-    icon: MessageSquare,
-    description: "View past conversations"
   }
 ]
 
@@ -94,7 +72,7 @@ function SidebarContent({ onItemClick }: SidebarContentProps) {
       </div>
 
       {/* Navigation Items */}
-      <div className="flex-1 px-4 py-6 space-y-6">
+      <div className="flex-1 px-4 py-6">
         <div>
           <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
             Navigation
@@ -152,31 +130,6 @@ function SidebarContent({ onItemClick }: SidebarContentProps) {
               )
             })}
           </nav>
-        </div>
-
-        {/* Quick Actions */}
-        <div>
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Quick Actions
-          </h3>
-          <div className="space-y-1">
-            {quickActions.map((action) => {
-              const Icon = action.icon
-              return (
-                <button
-                  key={action.title}
-                  onClick={onItemClick}
-                  className="w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-colors"
-                >
-                  <Icon className="w-5 h-5" />
-                  <div className="flex-1 text-left">
-                    <div className="font-medium">{action.title}</div>
-                    <div className="text-xs text-gray-400">{action.description}</div>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
         </div>
       </div>
 
