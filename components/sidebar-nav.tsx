@@ -20,11 +20,7 @@ import {
   Home, 
   User, 
   Newspaper, 
-  MessageSquare, 
-  BookOpen, 
-  Settings,
-  HelpCircle,
-  Star
+  HelpCircle
 } from "lucide-react"
 
 const navigationItems = [
@@ -43,24 +39,6 @@ const navigationItems = [
     url: "https://news.talkgpt-ai.fun/",
     icon: Newspaper,
     external: true
-  }
-]
-
-const quickActions = [
-  {
-    title: "Ask Question",
-    description: "Start a new conversation",
-    icon: MessageSquare,
-  },
-  {
-    title: "Study Guide",
-    description: "Create study materials",
-    icon: BookOpen,
-  },
-  {
-    title: "Settings",
-    description: "Customize your experience",
-    icon: Settings,
   }
 ]
 
@@ -125,46 +103,6 @@ export function AppSidebar() {
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="space-y-1 mt-6">
-          <div className="px-3 py-2">
-            <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
-              Quick Actions
-            </h2>
-          </div>
-          <SidebarMenu>
-            {quickActions.map((action) => (
-              <SidebarMenuItem key={action.title}>
-                <SidebarMenuButton className="w-full justify-start">
-                  <action.icon className="w-4 h-4" />
-                  <div className="flex-1 text-left">
-                    <div className="font-medium">{action.title}</div>
-                    <div className="text-xs text-gray-500">{action.description}</div>
-                  </div>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </div>
-
-        {/* Study Stats */}
-        <div className="mt-6 p-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border border-purple-100">
-          <div className="flex items-center space-x-2 mb-2">
-            <Star className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-800">Study Stats</span>
-          </div>
-          <div className="space-y-1 text-xs text-purple-700">
-            <div className="flex justify-between">
-              <span>Messages today:</span>
-              <span className="font-medium">12</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Study streak:</span>
-              <span className="font-medium">7 days 🔥</span>
-            </div>
-          </div>
         </div>
       </SidebarContent>
 
