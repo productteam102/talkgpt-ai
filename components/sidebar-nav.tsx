@@ -46,6 +46,23 @@ const navigationItems = [
   }
 ]
 
+const quickActions = [
+  {
+    title: "Ask Question",
+    description: "Start a new conversation",
+    icon: MessageSquare,
+  },
+  {
+    title: "Study Guide",
+    description: "Create study materials",
+    icon: BookOpen,
+  },
+  {
+    title: "Settings",
+    description: "Customize your experience",
+    icon: Settings,
+  }
+]
 
 export function AppSidebar() {
   const pathname = usePathname()
