@@ -32,40 +32,20 @@ const navigationItems = [
     title: "Home",
     url: "/",
     icon: Home,
-    description: "Chat with TalkGPT"
   },
   {
     title: "Profile",
     url: "/profile",
     icon: User,
-    description: "Your study profile"
   },
   {
     title: "News",
     url: "https://news.talkgpt-ai.fun/",
     icon: Newspaper,
-    description: "Latest updates",
     external: true
   }
 ]
 
-const quickActions = [
-  {
-    title: "Study Help",
-    icon: BookOpen,
-    description: "Get homework assistance"
-  },
-  {
-    title: "Quick Chat",
-    icon: MessageSquare,
-    description: "Start a new conversation"
-  },
-  {
-    title: "Settings",
-    icon: Settings,
-    description: "Customize your experience"
-  }
-]
 
 export function AppSidebar() {
   const pathname = usePathname()
